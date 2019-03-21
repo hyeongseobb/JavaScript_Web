@@ -19,4 +19,8 @@ app.get('/seob', function (req, res) {
   res.sendfile("css속성연습.html");
 });
 
+app.get('/seob2', function (req, res) {
+  res.sendfile("css속성연습2.html");
+});
+
 console.log("running");

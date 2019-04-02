@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <span id="textArea"></span>
+    <span id="textArea2"></span>
+    <span id="inputText1"></span>
+    <span id="btn1"></span>
+    <span id="numberArea"></span>
+
+  </body>
+  <script>
+    document.getElementById('textArea').innerHTML = "The answer of Quiz<br>" +
+     '<input type="button" value="click" id="button1">';
+    document.getElementById('textArea').addEventListener('click', function() {
+      document.getElementById('textArea').innerHTML = "";
+      document.getElementById('textArea2').innerHTML = '<input type="text" id="inputText1">';
+      document.getElementById('btn1').innerHTML = '<input type="button" value="구구단" id="button2">';
+    });
+    document.getElementById('btn1').addEventListener('click', function() {
+      var wow = "";
+      var inputNumber = document.getElementById('inputText1').value;
+      for (var i = inputNumber; i <= inputNumber; i++) {
+        for (var j = 1; j < 101; j++){
+          wow = wow + (i + " * " + j + " = " + (i * j)  + "<br>");
+        }
+      }
+      document.getElementById('btn1').innerHTML = '<input type="button" value="구구단" id="button2">'+ "<br>" + wow;
+    });
+  </script>
+</html>

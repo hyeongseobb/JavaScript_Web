@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <span id="textArea"></span>
+    <span id="numberArea"></span>
+    <span id="button1"></span>
+  </body>
+  <script>
+    document.getElementById('textArea').innerHTML = "The answer of Quiz<br>";
+    document.getElementById('button1').innerHTML = '<input type="button" value="click" id="button1">';
+    document.getElementById('button1').addEventListener('click', function() {
+      var wow = "";
+      for (var i = 0; i < 10; i++) {
+        for (var j = 1; j < 11; j++){
+          wow = wow + (i * 10 + j + " ");
+        }
+        wow = wow + "<br>";
+      }
+    document.getElementById('numberArea').innerHTML = wow;
+    document.getElementById('textArea').innerHTML = "";
+    document.getElementById('button1').innerHTML = "";
+    });
+  </script>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<style>
+  body {
+    color: skyblue;
+  }
+</style>
+
+<body>
+  ID : <input type="text" id="inputText">
+  <br>
+  PW : <input type="text" id="inputText2">
+  <br>
+  <input type="button" value="로그인" id="button1">
+</body>
+
+<script>
+  document.getElementById('button1').addEventListener('click', function() {
+    var input = document.getElementById('inputText').value;
+    var input2 = document.getElementById('inputText2').value;
+    if (input == "polytech" && input2 == "12341234") {
+      button1.style.backgroundColor = "skyblue";
+      alert("로그인 성공");
+      console.log("로그인 성공");
+    } else {
+      button1.style.backgroundColor = "red";
+      alert("로그인 실패");
+      console.log("로그인 실패");
+    }
+  });
+</script>
+
+</html>

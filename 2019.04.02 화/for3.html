@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<span id="numberArea"></span>
+
+<body>
+  <script>
+    // var numberText = "";
+    // for (var i = 1; i < 101; i++) {
+    //   numberText += i + " ";
+    //   if (i % 10 == 0) {
+    //     numberText += "<br>";
+    //   }
+    // }
+    // document.getElementById('numberArea').innerHTML = numberText;
+
+    var wow = "";
+    for (var i = 0; i < 10; i++) {
+      for (var j = 1; j < 11; j++){
+        wow += i * 10 + j + " ";
+      }
+      wow += "<br>";
+    }
+    document.getElementById('numberArea').innerHTML = wow;
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <input type="text" id="inputText1">
+    <input type="button" value="구구단" id="button1">
+    <br>
+    <span id="numberArea"></span>
+  </body>
+  <script>
+    document.getElementById('button1').addEventListener('click', function() {
+      var wow = "";
+      var inputNumber = document.getElementById('inputText1').value;
+      for (var i = inputNumber; i <= inputNumber; i++) {
+        for (var j = 1; j < 101; j++){
+          wow = wow + (i + " * " + j + " = " + (i * j)  + "<br>");
+        }
+      }
+    document.getElementById('numberArea').innerHTML = wow;
+    });
+  </script>
+</html>

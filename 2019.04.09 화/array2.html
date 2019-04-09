@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+
+</body>
+<script>
+  for (var i = 1; i < 201; i++) {
+    var str = i + "";
+    var clap = " ";
+    for(var j = 0; j < str.length; j++) {
+      if(str[j] == 3 || str[j] == 6 || str[j] == 9){
+        clap = "짝";
+      }
+    }
+    console.log(str + " " + clap);
+  }
+
+</script>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="radio" name="radioBtn">
+  <input type="radio" name="radioBtn">
+  <input type="radio" name="radioBtn">
+  <input type="radio" name="radioBtn"><br>
+  <input type="button" value="몇번째" id="btn">
+  <script>
+    document.getElementById('btn').addEventListener('click', function(){
+      var radios = document.getElementsByName('radioBtn');
+      for(var i = 0; i < radios.length; i++) {
+        if(radios[i].checked == true) {
+          alert(i+1);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

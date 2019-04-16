@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  1번　
+  0<input type="radio" name="radioBtn">　
+  1<input type="radio" name="radioBtn">　
+  2<input type="radio" name="radioBtn">　
+  3<input type="radio" name="radioBtn">　
+  4<input type="radio" name="radioBtn">　
+  가중치<input type="text" id="inputText"> <br>
+
+  2번　
+  0<input type="radio" name="radioBtn2">　
+  1<input type="radio" name="radioBtn2">　
+  2<input type="radio" name="radioBtn2">　
+  3<input type="radio" name="radioBtn2">　
+  4<input type="radio" name="radioBtn2">　
+  가중치<input type="text" id="inputText2"> <br>
+
+  3번　
+  0<input type="radio" name="radioBtn3">　
+  1<input type="radio" name="radioBtn3">　
+  2<input type="radio" name="radioBtn3">　
+  3<input type="radio" name="radioBtn3">　
+  4<input type="radio" name="radioBtn3">　
+  가중치<input type="text" id="inputText3"> <br>
+  <span id="result"></span> <br>
+  <input type="button" value=" 계산 " id="button">
+
+  <script>
+    document.getElementById('button').addEventListener('click', function() {
+      var sumValue = 0;
+      var inputNumber = document.getElementById('inputText').value;
+      var radios = document.getElementsByName('radioBtn');
+      var inputNumber2 = document.getElementById('inputText2').value;
+      var radios2 = document.getElementsByName('radioBtn2');
+      var inputNumber3 = document.getElementById('inputText3').value;
+      var radios3 = document.getElementsByName('radioBtn3');
+
+      for(var i = 0; i < radios.length; i++) {
+        if(radios[i].checked == true) {
+          sumValue = sumValue + (i * inputNumber)
+          console.log(i + " x " + inputNumber + " = " + i * inputNumber);
+          break;
+        }
+      }
+
+      for(var j = 0; j < radios2.length; j++) {
+        if(radios2[j].checked == true) {
+          sumValue = sumValue + (j * inputNumber2)
+          console.log(j + " x " + inputNumber2 + " = " + j * inputNumber2);
+          break;
+        }
+      }
+
+      for(var k = 0; k < radios3.length; k++) {
+        if(radios3[k].checked == true) {
+          sumValue = sumValue + (k * inputNumber3)
+          console.log(k + " x " + inputNumber3 + " = " + k * inputNumber3);
+          console.log(sumValue);
+          break;
+        }
+      }
+      document.getElementById('result').innerHTML = `${i}x${inputNumber} + ${j}x${inputNumber2} + ${k}x${inputNumber3} = ${sumValue}`;
+    });
+  </script>
+
+</body>
+
+</html>

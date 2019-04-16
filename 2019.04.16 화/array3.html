@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <span id="textArea"></span>
+</body>
+
+<script>
+  var arr1 = [];
+  var arr2 = [];
+  var arr3 = [];
+  var arr4 = [];
+
+  for (var i = 0; i < 5; i++) {
+    arr1[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr1[i][j] = (5 * i) + j + 1;
+    }
+    arr1[i][4] += "<br>";
+  }
+  console.log(arr1);
+
+  for (var i = 0; i < 5; i++) {
+    arr2[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr2[i][j] = (15 * i) + (3 * j) + 1;
+    }
+  }
+  console.log(arr2);
+
+  for (var i = 0; i < 5; i++) {
+    arr3[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr3[i][j] = i * j;
+    }
+  }
+  console.log(arr3);
+
+  for (var i = 0; i < 5; i++) {
+    arr4[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr4[i][j] = String(i) + String(j);
+    }
+  }
+  console.log(arr4);
+  document.getElementById('textArea').innerHTML = arr1;
+</script>
+</html>

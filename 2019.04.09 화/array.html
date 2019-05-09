@@ -34,16 +34,19 @@
       arr1[i] = i + 1;
     }
     console.log(arr1);
+    //1~10까지출력
 
     for (var i = 0; i < 11; i++) {
       arr2[i] = 2 * i
     }
     console.log(arr2);
+    //1~20 짝수출력
 
     for (var i = 0; i < 7; i++) {
       arr3[i] = 3 * (i + 1)
     }
     console.log(arr3);
+    //3~21까지 3의 배수출력
 
     for (var i = 0; i < 8; i++) {
       if (i % 2 == 0) {
@@ -53,11 +56,14 @@
       }
     }
     console.log(arr4);
+    //홀수 인덱스에 짝수 출력하기
+    //짝수 인덱스에 홀수 출력하기
 
     for (var i = 0; i < 7; i++) {
       arr5[i] = "abc" + (i + 1)
     }
     console.log(arr5);
+    //["abc1", "abc2", "abc3", "abc4", "abc5", "abc6", "abc7"]
 
     for (var i = 0; i < 9; i++) {
       if (i == 0) {
@@ -67,19 +73,21 @@
       }
     }
     console.log(arr6);
+    // [ 1, 4, 7, 10, 13, 16, 19, 22, 25] 3씩 증가하는 등차수열
 
     var j = 1;
     for (var i = 0; i < 9; i++) {
       arr7[i] = j + (3 * i)
     }
     console.log(arr7);
+    // [ 1, 4, 7, 10, 13, 16, 19, 22, 25] 3씩 증가하는 등차수열
 
     for (var i = 1; i < 8; i++) {
       arr8[i - 1] = "abc" + i;
     }
     console.log(arr8);
+    //["abc1", "abc2", "abc3", "abc4", "abc5", "abc6", "abc7"]
 
-    //피보나치 수열
     for (var i = 0; i < 15; i++) {
       if (i == 0) {
         arr9[i] = 0;
@@ -90,16 +98,19 @@
       }
     }
     console.log(arr9);
+    //피보나치 수열
 
     for (var i = 0; i < 12; i++) {
       arr10[i] = i % 2
     }
     console.log(arr10);
+    // 2로나눈 나머지 출력 [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
 
     for (var i = 0; i < 12; i++) {
       arr11[i] = i % 4
     }
     console.log(arr11);
+    // 4로 나눈 나머지 출력 [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]
 
     for (var i = 0; i < 6; i++) {
       if (i == 0) {
@@ -109,11 +120,13 @@
       }
     }
     console.log(arr12);
+    //["text", "texttext", "texttexttext", "texttexttexttext", "texttexttexttexttext", "texttexttexttexttexttext"]
 
     for (var i = 0; i < 8; i++) {
       arr13[i] = 10 ** i
     }
     console.log(arr13);
+    //[1, 10, 100, 1000, 10000, 100000, 1000000, 10000000] 10의 제곱수
 
     var z = "0";
     for (var i = 0; i < 8; i++) {
@@ -124,11 +137,13 @@
       }
     }
     console.log(arr14);
+    //["1", "10", "100", "1000", "10000", "100000", "1000000", "10000000"]
 
     for (var i = 0; i < 8; i++) {
       arr15[i] = Math.pow(10, i)
     }
     console.log(arr15);
+    //[1, 10, 100, 1000, 10000, 100000, 1000000, 10000000] 10의 제곱수
 
     for (var i = 0; i < 8; i++) {
       if (i == 0) {
@@ -138,11 +153,13 @@
       }
     }
     console.log(arr16)
+    //[1, 10, 100, 1000, 10000, 100000, 1000000, 10000000] 10의 제곱수
 
     for (var i = 0; i < 5; i++) {
       arr17[i] = i * i;
     }
     console.log(arr17);
+    //[0, 1, 4, 9, 16] i의 제곱 출력
 
     for (var i = 0; i < 5; i++) {
       if (i % 2 == 0) {
@@ -152,12 +169,14 @@
       }
     }
     console.log(arr18);
+    // ["J", "H", "J", "H", "J"]
 
     arr19[0] = 0;
     for (var i = 2; i < 10; i += 2) {
       arr19[i / 2] = arr19[i / 2 - 1] + 10;
     }
     console.log(arr19);
+    // [0, 10, 20, 30, 40]
 
     for (var i = 4; i < 16; i = i + 4) {
       for (var j = 0; j < 4; j++) {
@@ -165,6 +184,7 @@
       }
     }
     console.log(arr20);
+    // [4, 3, 2, 1, 8, 7, 6, 5, 12, 11, 10, 9]
   </script>
 </body>
 

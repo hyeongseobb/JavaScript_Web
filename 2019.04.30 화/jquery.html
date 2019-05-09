@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  이름: <input type="text" id="name"> <br>
+  html: <input type="text" id="html"> <br>
+  javascript: <input type="text" id="javascript"> <br>
+  css: <input type="text" id="css"> <br>
+  nodejs: <input type="text" id="nodejs"> <br>
+  mysql: <input type="text" id="mysql"> <br>
+  <input type="button" id="input" value="성적입력">
+  <input type="button" id="reset" value="초기화">
+  <br>
+  <span id="total"></span>
+  <br>
+  <span id="totalAvr"></span>
+  <br>
+
+  <span id="max"></span>
+
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  var avr = 0;
+  var htmlAvr = 0;
+  var javascriptAvr = 0;
+  var cssAvr = 0;
+  var nodejsAvr = 0;
+  var mysqlAvr = 0;
+  var total = 0;
+  var Hsum = 0;
+  var Jsum = 0;
+  var Csum = 0;
+  var Nsum = 0;
+  var Msum = 0;
+  var Tsum = 0;
+  var cnt = 0;
+  var name;
+  var topname = ' ';
+  var topAvr = 0;
+
+  $("#input").click(function() {
+    var name = $("#name").val()
+    var html = Number($("#html").val())
+    var javascript = Number($("#javascript").val())
+    var css = Number($("#css").val())
+    var nodejs = Number($("#nodejs").val())
+    var mysql = Number($("#mysql").val())
+
+    total = html + javascript + css + nodejs + mysql;
+    cnt++
+    avr = total / 5
+
+    Hsum += html;
+    Jsum += javascript;
+    Csum += css;
+    Nsum += nodejs;
+    Msum += mysql;
+    Tsum += avr;
+
+
+    var appendText = `이름 : ${name} / html : ${html} / javascript : ${javascript} / css : ${css} /
+      nodejs : ${nodejs} / mysql : ${mysql} / ${name}평균 : ${avr} <br>`
+    $('#total').append(appendText)
+
+    var avgText = `평균 : html평균 : ${(Hsum/cnt)} / javascript평균 : ${(Jsum/cnt)} /
+      css평균 : ${(Csum/cnt)} / nodejs평균 : ${(Nsum/cnt)} / mysql평균 : ${(Msum/cnt)} / 전체평균 : ${(Tsum/cnt)}`
+    $('#totalAvr').html(avgText)
+
+    if (cnt == 1) {
+      topAvr = avr;
+      topname = name
+      $('#max').html(`최고점자 / 이름 : ${topname} / 평균 : ${topAvr}`)
+    } else if (avr > topAvr) {
+      topAvr = avr;
+      topname = name
+      $('#max').html(`최고점자 평균 이름 : ${topname} / 평균 : ${topAvr}`)
+    }
+
+    $('#reset').click(function() {
+      $("#name").val(" ")
+      $("#html").val(" ")
+      $("#javascript").val(" ")
+      $("#css").val(" ")
+      $("#nodejs").val(" ")
+      $("#mysql").val(" ")
+    })
+  })
+</script>
+
+</html>

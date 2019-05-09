@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>복습</title>
+</head>
+
+<body>
+  <span id="firstScreen"></span>
+  <span id="secondScreen"></span>
+
+</body>
+<script>
+  var count = 0;
+  var sum = 0;
+  var avg = 0;
+  document.getElementById('firstScreen').innerHTML = 'The answer of Quiz<br>' + '<input type="button" value="start" id="startBtn">';
+
+  document.getElementById('startBtn').addEventListener('click', function() {
+    document.getElementById('firstScreen').innerHTML = ""
+    document.getElementById('secondScreen').innerHTML = '숫자1　<input type="text" id="num1"> <br>' +
+      '숫자2　<input type="text" id="num2"> <br>' + '<input type="button" value="계산" id="calBtn"><br>' +
+      '<input type="button" value="총합" id="sumBtn"><br>' + '<input type="button" value="평균" id="avgBtn"><br>' +
+      '계산결과 <br><span id="result"></span><br><br>' + '횟수 : <span id="count"></span><br>' +
+      '총합 : <span id="sum"></span><br> 평균 : <span id="avg"></span>';
+
+    document.getElementById('calBtn').addEventListener('click', function() {
+      var input = Number(document.getElementById('num1').value);
+      var input2 = Number(document.getElementById('num2').value);
+      document.getElementById('result').innerHTML += `${input} X ${input2} = ${input*input2}` + "<br>";
+      count++;
+      sum += input * input2;
+      document.getElementById('count').innerHTML = count;
+    });
+
+    document.getElementById('sumBtn').addEventListener('click', function() {
+      document.getElementById('sum').innerHTML = sum;
+    });
+
+    document.getElementById('avgBtn').addEventListener('click', function() {
+      avg = sum / count;
+      console.log(avg);
+      document.getElementById('avg').innerHTML = avg;
+    });
+
+  });
+</script>
+
+
+</html>

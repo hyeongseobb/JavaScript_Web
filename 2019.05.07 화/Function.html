@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <select name="" id="selectBox">
+    <!-- selectBox 안에있는 value가 진짜임 -->
+    <option value="1">개</option>
+    <option value="2">돼지</option>
+    <option value="3">소</option>
+    <option value="4">말</option>
+  </select>
+  <input type="button" value="버튼" id="animalBtn"><br>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  // $("#animalBtn").click(function() {
+  //   if (Number($("#selectBox").val()) == 1) {
+  //     showMsg("개");
+  //   } else if (Number($("#selectBox").val()) == 2) {
+  //     showMsg("돼지");
+  //   } else if (Number($("#selectBox").val()) == 3) {
+  //     showMsg("소");
+  //   } else if (Number($("#selectBox").val()) == 4) {
+  //     showMsg("말");
+  //   }
+  // });
+
+  // function showMsg(animalName) {
+  //   console.log(`${animalName}를 선택하셨습니다.`);
+  // }
+
+  //함수를 변수에 담을 수도 있음.
+  //다만 이렇게 할 경우 함수를 선언하고 함수를 사용해주어야함.
+  var plus = function (a, b) {
+    console.log(a+b);
+    return `a = ${a}, b = ${b}`;
+  }
+  console.log(plus(3, 6));
+
+  //함수선언순서와 console.log 순서를 바꿔도 실행이됨.(hoisting)
+  console.log(minus(7, 2));
+  function minus (c, d) {
+    console.log(c-d);
+    return `c = ${c}, d = ${d}`;
+  }
+
+</script>
+
+</html>

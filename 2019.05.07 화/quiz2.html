@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<style media="screen">
+   div{
+     border:1px solid indigo;
+     height: 100px;
+     color: indigo;
+     font-size: 40px;
+     font-style: italic;
+     text-align: center;
+   }
+</style>
+<body>
+  <select name="" id="selectKind">
+    <option value="0">현대</option>
+    <option value="1">기아</option>
+    <option value="2">쌍용</option>
+    <option value="3">벤츠</option>
+    <option value="4">bmw</option>
+  </select>
+  <select name="" id="selectColor">
+    <option value="0">빨강</option>
+    <option value="1">파랑</option>
+    <option value="2">초록</option>
+    <option value="3">노랑</option>
+    <option value="4">검정</option>
+  </select>
+  <input type="button" value="요청" id="reqBtn"><br>
+  <div id="result"></div><br>
+  <input type="button" value="개" id="dogBtn"><br>
+  <span id="dog"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  $("#reqBtn").click(function() {
+    $.ajax({
+      url: `http://localhost/test8`,
+      data: {
+        carKind : $("#selectKind").val(),
+        carColor : $("#selectColor").val()
+      },
+      success: function(response) {
+        //result라는 id를 가진 span 태그에 response를 띄워줌
+        $('#result').html(response)
+        console.log(response)
+      }
+    })
+  });
+  $("#dogBtn").click(function() {
+    $.ajax({
+      url: `http://localhost/test10`,
+      data: {},
+      success: function(response) {
+        $('#dog').html(response)
+      }
+    })
+  });
+</script>
+
+</html>

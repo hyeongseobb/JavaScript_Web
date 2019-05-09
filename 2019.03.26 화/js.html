@@ -17,12 +17,13 @@
     document.getElementById('button3').addEventListener('click', function(){
       var inputNumber = document.getElementById('inputText').value;
       var inputNumber2 = document.getElementById('inputText2').value;
-        if(Number(inputNumber)+Number(inputNumber2) >= 10){
+        if(Number(inputNumber) + Number(inputNumber2) >= 10){
           alert("10 이상");
         }
         else{
           alert("10 미만");
         }
     });
+    // Number()괄호안의 문자를 숫자로 바꿔줌.
   </script>
 </html>

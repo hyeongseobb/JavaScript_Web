@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <input type="text" id="num1">
+  <input type="text" id="num2">
+  <input type="text" id="num3">
+  <input type="button" value="곱하기" id="multiBtn">
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  $("#multiBtn").click(function() {
+        var num1 = Number($("#num1").val());
+        var num2 = Number($("#num2").val());
+        var num3 = Number($("#num3").val());
+        $.ajax({
+          url:`http://localhost/test4?num1=${num1}&num2=${num2}&num3=${num3}`,
+          data: {},
+          success: function(response) {
+            console.log(response);
+          }
+        })
+      });
+</script>
+</html>

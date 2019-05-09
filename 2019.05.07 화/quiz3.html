@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="text" id="firstNum">
+  <input type="text" id="secondNum">
+  <input type="text" id="thirdNum">
+  <div id="result"></div><br><br>
+  <input type="button" value="return값으로" id="returnBtn">
+  <input type="button" value="실행부에서" id="exeBtn">
+  <input type="button" value="배열로해보기1" id="arrayBtn1">
+  <input type="button" value="배열로해보기2" id="arrayBtn2">
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+//리턴값으로 해결
+//cf. 삼항연산자 활용하기
+//var result = (firstNum >= secondNum? firstNum : secondNum >= thirdNum? secondNum : thirdNum)
+  function wow(firstNum, secondNum, thirdNum) {
+    if(firstNum <= secondNum && secondNum <= thirdNum) {
+      return thirdNum;
+    } else if (thirdNum <= firstNum && firstNum <= secondNum) {
+      return secondNum;
+    } else if (secondNum <= thirdNum && thirdNum <= firstNum) {
+      return firstNum;
+    }
+  }
+
+//함수 실행부에서 출력
+  function wow2(firstNum, secondNum, thirdNum) {
+    if(firstNum <= secondNum && secondNum <= thirdNum) {
+      $('#result').html(thirdNum)
+    } else if (thirdNum <= firstNum && firstNum <= secondNum) {
+      $('#result').html(secondNum)
+    } else if (secondNum <= thirdNum && thirdNum <= firstNum) {
+      $('#result').html(firstNum)
+    }
+  }
+
+//array를 사용해서 비교해보기
+function wow3(firstNum, secondNum, thirdNum) {
+  var numArray = [firstNum, secondNum, thirdNum];
+  var max = Math.max.apply(null,numArray);
+  $('#result').html(max)
+}
+
+//Math.max.apply(null,numArray)를 사용하지 않고 해보기
+function wow4(firstNum, secondNum, thirdNum) {
+  var numArray = [firstNum, secondNum, thirdNum];
+  var maxNum = 0;
+  for(var i = 0; i < numArray.length; i++) {
+    // maxNum의 값과 현재 값을 비교해서 maxNum값을 가장 큰 값으로 유지
+    if (maxNum < numArray[i]) {
+      maxNum = numArray[i];
+    }
+  }
+  $('#result').html(maxNum)
+}
+
+  $("#returnBtn").click(function() {
+    var firstNum = Number($("#firstNum").val());
+    var secondNum = Number($("#secondNum").val());
+    var thirdNum = Number($("#thirdNum").val());
+    $('#result').html(wow(firstNum, secondNum, thirdNum))
+  });
+
+  $("#exeBtn").click(function() {
+    var firstNum = Number($("#firstNum").val());
+    var secondNum = Number($("#secondNum").val());
+    var thirdNum = Number($("#thirdNum").val());
+    wow2(firstNum, secondNum, thirdNum);
+  });
+
+  $("#arrayBtn1").click(function() {
+    var firstNum = Number($("#firstNum").val());
+    var secondNum = Number($("#secondNum").val());
+    var thirdNum = Number($("#thirdNum").val());
+    wow3(firstNum, secondNum, thirdNum);
+  });
+
+  $("#arrayBtn2").click(function() {
+    var firstNum = Number($("#firstNum").val());
+    var secondNum = Number($("#secondNum").val());
+    var thirdNum = Number($("#thirdNum").val());
+    wow4(firstNum, secondNum, thirdNum);
+  });
+
+</script>
+
+</html>

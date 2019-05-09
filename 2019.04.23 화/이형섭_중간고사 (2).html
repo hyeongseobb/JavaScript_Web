@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>이형섭_중간고사</title>
+</head>
+
+<body>
+  이름 : <input type="text" id="name"><br>
+  html : <input type="text" id="html"><br>
+  javascript : <input type="text" id="javascript"><br>
+  css : <input type="text" id="css"><br>
+  nodejs : <input type="text" id="nodejs"><br>
+  mysql : <input type="text" id="mysql"><br>
+
+  <input type="button" value="성적입력" id="button1">
+  <input type="button" value="초기화" id="button2"><br>
+
+  <span id="studentscore"></span><br><br>
+
+  <span id="studentavg"></span>
+  <span id="beststudent"></span>
+</body>
+<script>
+  var count = 0;
+  var sumHtml = 0;
+  var sumJavascript = 0;
+  var sumCss = 0;
+  var sumNodejs = 0;
+  var sumMysql = 0;
+  var totalSum = 0;
+  var maxNum = 0;
+  document.getElementById('button1').addEventListener('click', function() {
+    var name = document.getElementById('name').value;
+    var html = Number(document.getElementById('html').value);
+    var javascript = Number(document.getElementById('javascript').value);
+    var css = Number(document.getElementById('css').value);
+    var nodejs = Number(document.getElementById('nodejs').value);
+    var mysql = Number(document.getElementById('mysql').value);
+    var mySum = Number(html + javascript + css + nodejs + mysql);
+    var myAvg = Number(mySum/5);
+
+    count++;
+    sumHtml += html;
+    sumJavascript += javascript;
+    sumCss += css;
+    sumNodejs += nodejs;
+    sumMysql += mysql;
+    totalSum += mySum;
+    document.getElementById('studentscore').innerHTML += `이름: ${name} / html : ${html} / javascript : ${javascript} / css : ${css} / nodejs : ${nodejs} / mysql : ${mysql} / ${name}평균 : ${parseFloat(myAvg)}<br>`;
+    document.getElementById('studentavg').innerHTML =
+      `평균 : html평균 : ${parseFloat(sumHtml/count)} / javascript평균 : ${parseFloat(sumJavascript/count)} / css평균 : ${parseFloat(sumCss/count)} / nodejs평균 : ${parseFloat(sumNodejs/count)} / mysql평균 : ${parseFloat(sumMysql/count)} / 전체 평균 : ${parseFloat((totalSum/5)/count)} <br>`;
+
+    //최고점자
+    if(mySum > maxNum){
+      highName = name;
+      maxNum = mySum;
+    }
+    document.getElementById('beststudent').innerHTML = `최고점자 이름 : ${highName} / 평균 : ${parseFloat(maxNum/5)}`;
+
+    document.getElementById('name').value = "";
+    document.getElementById('html').value = "";
+    document.getElementById('javascript').value = "";
+    document.getElementById('css').value = "";
+    document.getElementById('nodejs').value = "";
+    document.getElementById('mysql').value = "";
+  });
+
+  document.getElementById('button2').addEventListener('click', function() {
+    count = 0;
+    sumHtml = 0;
+    sumJavascript = 0;
+    sumCss = 0;
+    sumNodejs = 0;
+    sumMysql = 0;
+    totalSum = 0;
+    maxNum = 0;
+    highName = "";
+    document.getElementById('studentscore').innerHTML = "";
+    document.getElementById('studentavg').innerHTML = "";
+    document.getElementById('beststudent').innerHTML = "";
+  });
+</script>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>뉴스 불러오기</title>
+</head>
+
+<body>
+  <input type="button" value="뉴스 추가" id="inputBtn"><br>
+  <input type="button" value="모든 뉴스 삭제" id="deleteBtn"><br><br>
+  뉴  스  본  문<div id="result"></div>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+function delBtn(index) {
+  $.ajax({
+    url: '/deleteOne',
+    type: 'post',
+    data: {
+      index : index
+    },
+    success: function(response) {
+      console.log(response);
+      alert("The news you chose is cleared")
+      location.href = "/newList";
+    }
+  })
+}
+  $.ajax({
+    url: '/select',
+    type: 'post',
+    data: {},
+    success: function(response) {
+      var newText = "";
+      var saveNews = "";
+      for (var i = 0; i < response.length; i++) {
+        saveNews = response[i];
+        index = saveNews.no;
+        newText = "title: " + saveNews.title + ", text: " + saveNews.text;
+        $('#result').append(`${newText}　<input type="button" value="삭제" onclick="delBtn(${index})"><br>`)
+      }
+    }
+  });
+
+  $("#deleteBtn").click(function() {
+    $.ajax({
+      url: '/delete',
+      type: 'post',
+      data: {},
+      success: function(response) {
+        alert("Delete Success!");
+        location.href = "newList"
+      }
+    })
+  });
+
+  $("#inputBtn").click(function() {
+    location.href = "/dataInsert";
+  });
+</script>
+
+</html>

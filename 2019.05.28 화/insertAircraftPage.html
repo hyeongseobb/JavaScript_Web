@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>항공기 입력페이지</title>
+  </head>
+  <body>
+    <span id="colName"> 항공코드 / 항공기명 / 좌석수</span><br><br>
+    <span id="resultAircraft"></span><br>
+
+    항공코드 : <input type="text" id="aircraftCode"><br>
+    항공기명 : <input type="text" id="aircraftName"><br>
+    좌석수 : <input type="text" id="seats"><br>
+    <input type="button" value="입력" id="insert">
+    <input type="button" value="취소" id="cancel">
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript">
+    $("#cancel").click(function() {
+      location.href = "/flightListPage";
+    });
+    $("#insert").click(function() {
+      $.ajax({
+        url: '/insertAircraft',
+        type: 'POST',
+        data: {
+          aircraftCode: String($("#aircraftCode").val()),
+          aircraftName: String($("#aircraftName").val()),
+          seats: Number($("#seats").val())
+        },
+        success: function(response) {
+          alert("Insert Success!");
+          location.href = "/flightListPage";
+        }
+      })
+    });
+    $.ajax({
+      url: '/selectAircraft',
+      type: 'post',
+      data: {},
+      success: function(response) {
+        var newAircraft = "";
+        var saveAircraft = "";
+        var index;
+        for (var i = 0; i < response.length; i++) {
+          saveAircraft = response[i];
+          index = saveAircraft.no;
+          newAircraft = saveAircraft.aircraftCode + " / " + saveAircraft.aircraftName + " / " + saveAircraft.seats;
+          $('#resultAircraft').append(`${newAircraft}<input type="button" value="삭제" onclick="delBtn(${index})"><br>`)
+        }
+      }
+    });
+    function delBtn(index) {
+      $.ajax({
+        url: '/deleteAircraft',
+        type: 'post',
+        data: {
+          index : index
+        },
+        success: function(response) {
+          console.log(response);
+          alert("The data you chose is cleared")
+          location.href = "/insertAircraftPage";
+        }
+      })
+    }
+  </script>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>항공편 리스트</title>
+</head>
+<style>
+	table.t_ex2 {background:#D9E5FF; width:90%; margin:0 auto; text-align:right}
+	.t_ex2 td, .t_ex2 th {border:1px solid #FFFFFF;padding:5px}
+	.t_ex2 th {background:#3162C7; color:#fff; text-align:center}
+	table.t_ex2 .c1 {text-align:center}
+  a {padding: 10px 20px; display: inline-block; margin: 5px; background: #3162C7; color: #FFF; border-radius: 5px; text-decoration: none; font-weight: bold;}
+</style>
+<body>
+  <!-- 코드분리를 위해서 a태그에 href넣는 것은 지양 -->
+  　　　<a href="insertFlightPage">항공편 입력</a>
+  <a href="insertAircraftPage">항공기 입력</a><br><br>
+  <table class="t_ex2" id="resultJoinDB">
+	<tr>
+		<th class="c1">
+			편 명
+		</th>
+		<th class="c1">
+			항공기명
+		</th>
+		<th class="c1">
+			좌석수
+		</th>
+		<th class="c1">
+			출발지
+		</th>
+    <th class="c1">
+      목적지
+    </th>
+    <th class="c1">
+      출발 시각
+    </th>
+    <th class="c1">
+      도착 시각
+    </th>
+	</tr>
+  </table><br>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  $.ajax({
+    url: '/joinTable',
+    type: 'post',
+    data: {},
+    success: function(response) {
+      var htmlString = "";
+      for (var i = 0; i < response.length; i++) {
+        htmlString = htmlString + "<tr>";
+        htmlString = htmlString + "<td>";
+        htmlString = htmlString + response[i].flightName;
+        htmlString = htmlString + "</td>";
+        htmlString = htmlString + "<td>";
+        htmlString = htmlString + response[i].aircraftName;
+        htmlString = htmlString + "</td>";
+        htmlString = htmlString + "<td>";
+        htmlString = htmlString + response[i].seats;
+        htmlString = htmlString + "</td>";
+        htmlString = htmlString + "<td>";
+        htmlString = htmlString + response[i].departure;
+        htmlString = htmlString + "</td>";
+        htmlString = htmlString + "<td>";
+        htmlString = htmlString + response[i].arrival;
+        htmlString = htmlString + "</td>";
+        htmlString = htmlString + "<td>";
+        htmlString = htmlString + response[i].departTime;
+        htmlString = htmlString + "</td>";
+        htmlString = htmlString + "<td>";
+        htmlString = htmlString + response[i].arrivalTime;
+        htmlString = htmlString + "</td>";
+        htmlString = htmlString + "</tr>";
+      }
+      $('#resultJoinDB').append(`${htmlString}`)
+    }
+  });
+
+
+</script>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>항공편 입력페이지</title>
+  </head>
+  <body>
+    <span id="colName">편명 / 항공코드 / 출발지 / 목적지 / 출발시각 / 도착시각</span><br><br>
+    <span id="resultFlight"></span><br>
+
+    편명 : <input type="text" id="flightName"><br>
+    항공코드 : <input type="text" id="aircraftCode"><br>
+    출발지 : <input type="text" id="departure"><br>
+    목적지 : <input type="text" id="arrival"><br>
+    출발시각 : <input type="text" id="departTime"><br>
+    도착시각 : <input type="text" id="arrivalTime"><br>
+    
+    <input type="button" value="입력" id="insert">
+    <input type="button" value="취소" id="cancel">
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript">
+    $("#cancel").click(function() {
+      location.href = "/flightListPage";
+    });
+    $("#insert").click(function() {
+      $.ajax({
+        url: '/insertFlight',
+        type: 'POST',
+        data: {
+          flightName: String($("#flightName").val()),
+          aircraftCode: String($("#aircraftCode").val()),
+          departure: String($("#departure").val()),
+          arrival: String($("#arrival").val()),
+          departTime: String($("#departTime").val()),
+          arrivalTime: String($("#arrivalTime").val())
+        },
+        success: function(response) {
+          alert("Insert Success!");
+          location.href = "/flightListPage";
+        }
+      })
+    });
+    $.ajax({
+      url: '/selectFlight',
+      type: 'post',
+      data: {},
+      success: function(response) {
+        var newFlight = "";
+        var saveFlight = "";
+        var index;
+        for (var i = 0; i < response.length; i++) {
+          saveFlight = response[i];
+          index = saveFlight.no;
+          newFlight = saveFlight.flightName + " / " + saveFlight.aircraftCode + " / " + saveFlight.departure + " / " + saveFlight.arrival + " / " + saveFlight.departTime + " / " +saveFlight.arrivalTime;
+          $('#resultFlight').append(`${newFlight}　<input type="button" value="삭제" onclick="delBtn(${index})"><br>`)
+        }
+      }
+    });
+    function delBtn(index) {
+      $.ajax({
+        url: '/deleteFlight',
+        type: 'post',
+        data: {
+          index : index
+        },
+        success: function(response) {
+          console.log(response);
+          alert("The data you chose is cleared")
+          location.href = "/insertFlightPage";
+        }
+      })
+    }
+  </script>
+</html>

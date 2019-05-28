@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    writer : <input type="text" id="writer"><br>
+    title : <input type="text" id="title"><br>
+    text : <input type="text" id="text"><br>
+    <input type="button" value="수정 완료" id="updateBtn">
+    <input type="button" value="취소" id="cancelBtn">
+  </body>
+
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript">
+    console.log(location.href.split("=")[1]);
+
+    $.ajax({
+      url: '/getNews',
+      type: 'post',
+      data: {
+        index: location.href.split("=")[1],
+      },
+      success: function(response) {
+        $("#writer").val(response[0].writer)
+        $("#title").val(response[0].title)
+        $("#text").val(response[0].text)
+      }
+    });
+
+    $("#updateBtn").click(function() {
+      $.ajax({
+        url: '/updateOne',
+        type: 'post',
+        data: {
+          index: location.href.split("=")[1],
+          writer: String($("#writer").val()),
+          title: String($("#title").val()),
+          text: String($("#text").val())
+        },
+        success: function(response) {
+            console.log(response);
+            location.href = "/newList"
+        }
+      });
+    });
+    $("#cancelBtn").click(function() {
+      location.href = "/newList";
+    });
+  </script>
+</html>

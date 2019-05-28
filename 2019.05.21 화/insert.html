@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>뉴스 추가</title>
+</head>
+
+<body>
+  writer : <input type="text" placeholder="제목을 입력해주세요." id="writer"><br>
+  title : <input type="text" placeholder="제목을 입력해주세요." id="title"><br>
+  text : <input type="text" placeholder="내용을 입력해주세요." id="text"><br>
+  <input type="button" value="뉴스 저장" id="inputBtn"><br><br>
+  <div id="result"></div>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  $("#inputBtn").click(function() {
+    $.ajax({
+      url: '/input',
+      type: 'POST',
+      data: {
+        writer: String($("#writer").val()),
+        title: String($("#title").val()),
+        text: String($("#text").val())
+      },
+      success: function(response) {
+        alert("Insert Success!");
+        location.href = "/newList";
+      }
+    })
+  });
+
+</script>
+
+</html>

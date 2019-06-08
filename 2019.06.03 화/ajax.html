@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="button" value="ajax" id="ajaxBtn"><br>
+  <input type="button" value="주식정보" id="stockBtn"><br>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <input type="button" value="Show me the graph" id="graphBtn"><br>
+  <span id="result"></span><br>
+  <span id="resultStock"></span><br>
+  <span id="chartResult"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  $("#ajaxBtn").click(function() {
+    var timer = setInterval(function() {
+      $.ajax({
+        url: '/requestTest',
+        data: {},
+        success: function(res) {
+          console.log(res);
+          $("#result").append(res.price + `<br>`);
+        }
+      })
+    }, 2000);
+  });
+
+  $("#stockBtn").click(function() {
+    $.ajax({
+      url: '/selectStock',
+      data: {},
+      success: function(response) {
+        var saveStock = "";
+        var stockInfo = "";
+        for (var i = 0; i < response.length; i++) {
+          saveStock = response[i];
+          stockInfo = "시간 : " + saveStock.time + " / 가격 : " + saveStock.price;
+          $('#resultStock').append(`${stockInfo} <br>`)
+        }
+      }
+    });
+  });
+
+  var stockInfo;
+  $("#graphBtn").click(function() {
+    $.ajax({
+      url: '/selectStock',
+      data: {},
+      success: function(response) {
+        stockInfo = [];
+        var saveStock = "";
+        var realTime = "";
+        for (var i = 0; i < response.length; i++) {
+          saveStock = response[i];
+          realTime = Number(saveStock.time.replace(':','').replace(':','').split('T')[1].split('.')[0]);
+          stockInfo.push([realTime, saveStock.price]);
+        }
+        console.log(saveStock.time.replace(':','').replace(':','').split('T')[1].split('.')[0]);
+        google.charts.load('current', {
+          packages: ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawCurveTypes);
+        }
+      });
+    });
+
+    function drawCurveTypes() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Time');
+      data.addColumn('number', 'Price');
+      data.addRows(stockInfo);
+
+      var options = {
+        hAxis: {
+          title: 'Time'
+        },
+        vAxis: {
+          title: 'Price'
+        },
+        series: {
+          1: {
+            curveType: 'function'
+          }
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chartResult'));
+      chart.draw(data, options);
+      }
+</script>
+</html>

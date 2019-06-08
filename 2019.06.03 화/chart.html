@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="button" value="Give me the chart" id="drawChartBtn">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <div id="chart_div"></div>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  var arr;
+  //교수님 코드
+  $("#drawChartBtn").click(function() {
+    arr = [];
+    for (var i = 0; i < 10; i++) {
+      arr.push([i, Math.floor(Math.random() * 11), Math.floor(Math.random() * 11), Math.floor(Math.random() * 11)])
+    }
+    console.log(arr);
+    google.charts.load('current', {
+      packages: ['corechart', 'line']
+    });
+    google.charts.setOnLoadCallback(drawCurveTypes);
+  });
+
+  // 내 코드
+  // $("#drawChartBtn").click(function() {
+  //   for (var i = 0; i < 10; i++) {
+  //     arr[i] = [];
+  //     for (var j = 0; j < 4; j++) {
+  //       arr[i][0] = i;
+  //       arr[i][j] = Math.floor(Math.random() * 11);
+  //     }
+  //   }
+  //   console.log(arr);
+  //   google.charts.load('current', {
+  //     packages: ['corechart', 'line']
+  //   });
+  //   google.charts.setOnLoadCallback(drawCurveTypes);
+  // });
+
+  function drawCurveTypes() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'X');
+    data.addColumn('number', 'Dogs');
+    data.addColumn('number', 'Cats');
+    data.addColumn('number', 'Cows');
+    data.addRows(arr);
+
+    var options = {
+      hAxis: {
+        title: 'Time'
+      },
+      vAxis: {
+        title: 'Popularity'
+      },
+      series: {
+        1: {
+          curveType: 'function'
+        }
+      }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <select name="change" id="change">
+    <option value="biBox" id="biBox">삼천리자전거</option>
+    <option value="zmBox" id="zmBox">줌인터넷</option>
+    <option value="knnBox" id="knnBox">KNN</option>
+    <option value="icBox" id="icBox">아이크래프트</option>
+    <option value="balBox" id="balBox">대신밸런스</option>
+  </select>
+  <input type="button" value="시작" id="srtBtn">
+  <span id="span1"></span><br><br>
+  <span id="span2"></span><br>
+  <span id="span3"></span><br>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <div id="chart_div"></div>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  var cnt = 0;
+  var rows = []
+  var myurl = ""
+
+  $("#srtBtn").click(function() {
+    rows = []
+    $("#span2").html("")
+    if ($("#change").val() == "biBox") {
+      $("#span2").html('삼천리자전거')
+      myurl = 'https://polling.finance.naver.com/api/realtime.nhn?query=SERVICE_ITEM:024950'
+    } else if ($("#change").val() == "zmBox") {
+      $("#span2").html('줌인터넷')
+      myurl = 'https://polling.finance.naver.com/api/realtime.nhn?query=SERVICE_ITEM:239340'
+    } else if ($("#change").val() == "knnBox") {
+      $("#span2").html('KNN')
+      myurl = 'https://polling.finance.naver.com/api/realtime.nhn?query=SERVICE_ITEM:058400'
+    } else if ($("#change").val() == "icBox") {
+      $("#span2").html('아이크래프트')
+      myurl = 'https://polling.finance.naver.com/api/realtime.nhn?query=SERVICE_ITEM:052460'
+    } else if ($("#change").val() == "balBox") {
+      $("#span2").html('대신밸런스')
+      myurl = 'https://polling.finance.naver.com/api/realtime.nhn?query=SERVICE_ITEM:303030'
+    }
+  })
+
+  setInterval(function() {
+    cnt++
+    $("#span1").html("경과시간 : " + cnt + "초");
+
+    if (myurl != "") {
+      $.ajax({
+        url: `/getPrice`,
+        type: 'POST',
+        data: {
+          myurl: myurl
+        },
+        success: function(response) {
+          rows.push([cnt, Number(response)]);
+
+          google.charts.load('current', {
+            packages: ['corechart', 'line']
+          })
+          google.charts.setOnLoadCallback(drawCurveTypes);
+        }
+      })
+    }
+  }, 1000)
+
+  function drawCurveTypes() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'cnt');
+    data.addColumn('number', 'price');
+    data.addRows
+    (
+      rows
+    );
+    
+    var cnt1 = 0
+    if (cnt<10) {
+      cnt1 = 0
+    } else {
+      cnt1 = cnt - 10
+    }
+
+    var options = {
+      hAxis: {
+        title: 'Time',
+        viewWindow: {
+          min: cnt1,
+          max: cnt
+        }
+      },
+      vAxis: {
+        title: 'Price'
+      },
+      series: {
+        1: {
+          curveType: 'function'
+        }
+      }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
+
+</html>

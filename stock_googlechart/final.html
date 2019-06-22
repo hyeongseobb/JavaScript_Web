@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <select id="selectBox">
+      <option value="first" selected>롯데제과</option>
+      <option value="second">SK하이닉스</option>
+      <option value="third">아모레퍼시픽</option>
+      <option value="fourth">대한항공</option>
+      <option value="fifth">아시아나항공</option>
+    </select>
+    <input type="button" value="시작" id="startBtn">
+    <span id="timer"></span><br>
+    <span id="selectedValueTitle"></span><br>
+    <span id="chartResult"></span>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript">
+    var stockInfo = [];
+    var bigTimer1
+    var cnt1 = 0;
+    $("#startBtn").click(function() {
+      var checkSelectBoxValue = $("#selectBox").val()
+      if(checkSelectBoxValue == "first"){
+        clearInterval(bigTimer1);
+        bigTimer1 = setInterval(function() {
+        $("#selectedValueTitle").html("롯데제과");
+          $.ajax({
+            url: '/firstRequest',
+            data: {},
+            success: function(response) {
+              stockInfo.push([Number(cnt1), Number(response)]);
+              console.log(response)
+              console.log(cnt1)
+              google.charts.load('current', {
+                packages: ['corechart', 'line']
+              });
+              $("#chartResult").html("");
+              google.charts.setOnLoadCallback(drawCurveTypes);
+              }
+            })
+            cnt1++
+            $("#timer").html(`경과시간 : ${cnt1}`);
+          },1000);
+        }else if(checkSelectBoxValue === "second") {
+          stockInfo = [];
+          clearInterval(bigTimer1);
+          bigTimer1 = setInterval(function() {
+          $("#selectedValueTitle").html("SK하이닉스");
+          $.ajax({
+            url: '/secondRequest',
+            data: {},
+            success: function(response) {
+              stockInfo.push([Number(cnt1), Number(response)]);
+              console.log(response)
+              console.log(cnt1)
+              google.charts.load('current', {
+                packages: ['corechart', 'line']
+              });
+              $("#chartResult").html("");
+              google.charts.setOnLoadCallback(drawCurveTypes);
+              }
+            })
+            cnt1++
+            $("#timer").html(`경과시간 : ${cnt1}`);
+          },1000);
+        } else if(checkSelectBoxValue === "third") {
+          stockInfo = [];
+          clearInterval(bigTimer1);
+          bigTimer1 = setInterval(function() {
+          $("#selectedValueTitle").html("아모레퍼시픽");
+          $.ajax({
+            url: '/thirdRequest',
+            data: {},
+            success: function(response) {
+              stockInfo.push([Number(cnt1), Number(response)]);
+              console.log(response)
+              console.log(cnt1)
+              google.charts.load('current', {
+                packages: ['corechart', 'line']
+              });
+              $("#chartResult").html("");
+              google.charts.setOnLoadCallback(drawCurveTypes);
+              }
+            })
+            cnt1++
+            $("#timer").html(`경과시간 : ${cnt1}`);
+          },1000);
+        } else if(checkSelectBoxValue === "fourth") {
+          stockInfo = [];
+          clearInterval(bigTimer1);
+          bigTimer1 = setInterval(function() {
+          $("#selectedValueTitle").html("대한항공");
+          $.ajax({
+            url: '/fourthRequest',
+            data: {},
+            success: function(response) {
+              stockInfo.push([Number(cnt1), Number(response)]);
+              console.log(response)
+              console.log(cnt1)
+              google.charts.load('current', {
+                packages: ['corechart', 'line']
+              });
+              $("#chartResult").html("");
+              google.charts.setOnLoadCallback(drawCurveTypes);
+              }
+            })
+            cnt1++
+            $("#timer").html(`경과시간 : ${cnt1}`);
+          },1000);
+        } else if(checkSelectBoxValue === "fifth") {
+          stockInfo = [];
+          clearInterval(bigTimer1);
+          bigTimer1 = setInterval(function() {
+          $("#selectedValueTitle").html("아시아나항공");
+          $.ajax({
+            url: '/fifthRequest',
+            data: {},
+            success: function(response) {
+              stockInfo.push([Number(cnt1), Number(response)]);
+              console.log(response)
+              console.log(cnt1)
+              google.charts.load('current', {
+                packages: ['corechart', 'line']
+              });
+              $("#chartResult").html("");
+              google.charts.setOnLoadCallback(drawCurveTypes);
+              }
+            })
+            cnt1++
+            $("#timer").html(`경과시간 : ${cnt1}`);
+          },1000);
+        }
+    });
+
+    function drawCurveTypes() {
+      var data = new google.visualization.DataTable(stockInfo);
+      data.addColumn('number', 'Time');
+      data.addColumn('number', 'Price');
+      data.addRows(stockInfo);
+      var options = {
+        width: 1000,
+        height: 300,
+        hAxis: {
+          title:'Time',
+          viewWindow: {
+           min:cnt1-10,
+           max:cnt1
+          },
+        },
+        vAxis: {
+          title: 'Price'
+        },
+        series: {
+          1: {curveType: 'function'}
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chartResult'));
+      chart.draw(data, options);
+    }
+  </script>
+</html>

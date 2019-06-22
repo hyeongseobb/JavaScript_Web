@@ -45,45 +45,33 @@
       }
     });
   });
-  var stockArray = [
-    ["Time", "price"]
-  ]
   var stockInfo;
   $("#graphBtn").click(function() {
     $.ajax({
       url: '/selectStock',
       data: {},
       success: function(response) {
-        // stockInfo = [];
-        // var saveStock = "";
-        // var realTime = "";
-        // for (var i = 0; i < response.length; i++) {
-        //   saveStock = response[i];
-        //   var timeArray = [saveStock.time];
-        //   realTime = Number(saveStock.time.replace(':','').replace(':','').split('T')[1].split('.')[0]);
-        //   stockInfo.push([timeArray, saveStock.price]);
-        // }
-
+        stockInfo = [];
         for (var i = 0; i < response.length; i++) {
-          // saveStock = response[i];
-          test.push([response[i].time, response[i].price])
+          stockInfo.push([response[i].time, response[i].price]);
         }
-        console.log(saveStock.time.replace(':', '').replace(':', '').split('T')[1].split('.')[0]);
         google.charts.load('current', {
           packages: ['corechart', 'line']
         });
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawCurveTypes);
       }
     });
   });
 
-  function drawChart() {
-    var data = new google.visualization.arrayToDataTable(test);
-    // data.addColumn('number', 'Time');
-    // data.addColumn('number', 'Price');
-    // data.addRows(stockInfo);
+  function drawCurveTypes() {
+    var data = new google.visualization.DataTable(stockInfo);
+    data.addColumn('string', 'Time');
+    data.addColumn('number', 'Price');
+    data.addRows(stockInfo);
 
     var options = {
+      width: 5000,
+      height: 1000,
       hAxis: {
         title: 'Time'
       },

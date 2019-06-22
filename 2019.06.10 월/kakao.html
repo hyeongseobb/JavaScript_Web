@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <input type="button" id = "btn" value="카카오 주가 가져오기"> <br>
+    <input type="button" id="grap" value="그래프">
+    <span id = "span"></span>
+    <br>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="chart_div"></div>
+  </body>
+
+  <script src="http://code.jquery.com/jquery-latest.min.js">
+  </script>
+
+  <script type="text/javascript">
+    var array;
+    var answer;
+
+    var cnt = 0, timeInterval;
+    $("#btn").click(function(){
+        setTimeout(function(){
+          timeInterval = setInterval(function(){
+            cnt++
+            $.ajax({
+              url: '/kakaoStock',
+              data: {},
+              success:function(res){
+                console.log(res);
+                $("#span").html(res);
+              }
+            })
+          },1000)
+
+        },1000)
+
+    })
+
+
+$("#grap").click(function(){
+  $.ajax({
+
+
+      url: '/kakaoPrice',
+      data:{},
+      success:function(res){
+        console.log(res);
+
+        array = [];
+        answer = [];
+
+        for(let i = 0; i < res.length; i++){
+          answer[i] = res[i].time.split("T")[1]
+          answer[i] = answer[i].split(".")[0]
+          array.push([answer[i],res[i].price])
+        }
+          google.charts.load('current', {packages: ['corechart', 'line']
+        });
+          google.charts.setOnLoadCallback(drawAxisTickColors);
+      }
+
+  })
+
+})
+
+
+
+
+
+
+function drawAxisTickColors() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Time');
+      data.addColumn('number', 'kakao');
+
+      data.addRows(array);
+
+      var options = {
+        //크기 키우기 전에는 크기가 너무 작아서 안나온것으로 예
+        //혹시 모르니까 다른거 해보고싶으면 https://google-developers.appspot.com/chart/interactive/docs/datesandtimes#axesgridlinesticks
+        
+        width: 2000,
+        height: 700,
+        hAxis: {
+          title: 'Time',
+          textStyle: {
+            color: '#1a237e',
+            fontSize: 20,
+            bold: true
+          },
+          titleTextStyle: {
+            color: '#1a237e',
+            fontSize: 24,
+            bold: true
+          }
+        },
+        vAxis: {
+          title: '가격',
+          textStyle: {
+            color: '#1a237e',
+            fontSize: 20,
+            bold: true
+          },
+          titleTextStyle: {
+            color: '#1a237e',
+            fontSize: 24,
+            bold: true
+          }
+        },
+        colors: ['#a52714', '#097138']
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+
+  </script>
+</html>

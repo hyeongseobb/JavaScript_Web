@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>서보국 기말고사</title>
+</head>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<body>
+  <select name="selectBox" id="brand">
+    <option value="0">카카오</option>
+    <option value="1">네이버</option>
+    <option value="2">SK하이닉스</option>
+    <option value="3">LG전자</option>
+    <option value="4">삼성전자</option>
+  </select>
+  <input type="button" value="시작!" id="startBtn">
+  경과시간 : <span id="time"></span><br><br>
+  <div id="brandName"></div>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <div id="chart_div" style="width: 1200px; height: 500px"></div>
+</body>
+<script>
+  var brandName = ["카카오", "네이버", "SK하이닉스", "LG전자", "삼성전자"]
+  var priceValue = [];
+  var cnt = 0;
+  var selectOption = 0;
+  $("#startBtn").click(function() {
+    selectOption = $("#brand").val()
+    var timer = setInterval(function() {
+      $.ajax({
+        url: `http://localhost/getPrice`,
+        data: {
+          brand: selectOption
+        },
+        async: false,
+        success: function(response) {
+          cnt++;
+          $('#time').html(`${cnt}초`)
+          $('#brandName').html(brandName[$("#brand").val()])
+          priceValue.push([cnt, Number(response)])
+          if (priceValue.length > 10) {
+            priceValue.shift();
+          }
+          console.log(priceValue);
+          google.charts.load('current', {
+            packages: ['corechart', 'line']
+          });
+          google.charts.setOnLoadCallback(drawBasic);
+        }
+      });
+    }, 1000);
+  });
+
+  function drawBasic() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'X');
+    data.addColumn('number', brandName[$("#brand").val()]);
+    data.addRows(priceValue);
+    var options = {
+      hAxis: {
+        title: 'Time'
+      },
+      vAxis: {
+        title: 'Price'
+      }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+
+</script>
+</html>

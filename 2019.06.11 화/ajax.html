@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<!--카카오 주식정보 가져오기-->
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="button" id="aBtn" value="시작">
+  <input type="button" id="sBtn" value="멈춤">
+  <input type="button" id="gBtn" value="그래프">
+  <input type="button" id="dBtn" value="전부삭제">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <div id="chart_div"></div>
+  <span id="testArea"></span><br><br><br>
+  <span id="chatArea"></span>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+var inin;
+  $("#aBtn").click(function() {
+    inin = setInterval(function(){ //초당 자동 생성
+      $.ajax({
+        url: '/requestkakao',
+        data: {},
+        success: function(response) {
+           $("#testArea").html("");
+          for (var i = 0; i< response.length; i++) {
+            var priecNum = response[i].price;
+            // $("#testArea").append(`${response[i].price}/${response[i].time}<br>`);
+            //가격이라는 쿼리는 key:vlaue인 딕셔너리 형태가 들어있는 배열이기 때문에 어떤 쿼리에 어떤 밸류를 지정해줘야지 제대로 나온다.
+          }
+        }
+      });
+    }, 5000)
+  });
+
+  $("#dBtn").click(function(){//다 삭제하기
+    $.ajax({
+      url: '/allDelete',
+      data: {},
+      success: function(response) {
+        console.log(response);
+      }
+      })
+      alert("전부삭제 성공")
+      location.href = "/kakaoInfo"
+  });
+
+  $("#sBtn").click(function(){//잠깐 멈추기
+    setInterval(function(){
+      clearInterval(inin)
+      clearInterval(ininin)
+    })
+    alert("일시정지")
+    // location.href = "/kakaoInfo"
+  });
+
+var ininin;
+  $("#gBtn").click(function(){
+    ininin = setInterval(function(){ //초당 자동 생성
+    arr = [];
+    $.ajax({
+      url: '/selectPrice',
+      data: {},
+      success: function(response) {
+        var price = []
+        var time = []
+        for (var i = 0; i< response.length; i++) {
+          price = response[i].price
+          console.log(price);
+          time = response[i].time
+          var date = time.split('T')[0].split('-')
+          var time = time.split('T')[1].split('.')[0].split(':')
+          time[0] = Number(time[0])+9
+          var realtime = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
+          arr.push([realtime, price])
+        }
+        console.log(arr);
+        google.charts.load('current', { //차트버전은 최신으로 불러와주고
+          packages: ['corechart', 'line'] //차트정보 불러오기 어떤 차트를 쓰겠다는 것
+        });
+        google.charts.setOnLoadCallback(drawCurveTypes); //라이브러리 load
+      }
+    });
+  }, 5000)
+    });
+
+    function drawCurveTypes(){
+      var data = new google.visualization.DataTable(); //데이터 setting
+      data.addColumn('datetime', 'time');
+      data.addColumn('number', 'Kakao');
+
+
+      data.addRows(arr);
+
+
+      var options = { //옵션 setting
+        width: 2000,
+        height: 700,
+        hAxis: {
+          title: 'Time',
+          textStyle:{
+            color: '#1a237e',
+            fontSize: 20,
+            bold: true
+          }
+        },
+        vAxis: {
+          title: 'Price',
+          textStyle: {
+            color: '#1a237e',
+            fontSize: 20,
+            bold: true
+        },
+        titleTextStyle: {
+          color: '#1a237e',
+          fontSize: 24,
+          bold: true
+        }
+        },
+        colors:['#a52713','#097138']
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chatArea'));
+      chart.draw(data, options); //차트 그리기에 관한 거
+    }
+  </script>
+
+  </html>

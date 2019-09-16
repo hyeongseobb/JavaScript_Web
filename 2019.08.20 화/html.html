@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>hello html</title>
+    <style>
+      #title {
+        color:blue;
+      }
+      #content {
+        color:green;
+      }
+    </style>
+  </head>
+  <body>
+    제목 : <input type="text" id="title"><br><br>
+    내용 : <textarea name="name" rows="8" cols="80"id="content"></textarea><br><br>
+    <input type="button" id="postBtn" value="글쓰기">
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script>
+    // document.getElementById('postBtn').addEventListener('click', function() {
+    //   alert("complete");
+    // });
+    $("#postBtn").click(function(){
+      $.ajax({
+        url: '/insertData',
+        type: 'post',
+        data: {
+          title : $("#title").val(),
+          content : $("#content").val()
+        },
+        success: function(response) {
+           alert("complete");
+          }
+        })
+      });
+  </script>
+</html>

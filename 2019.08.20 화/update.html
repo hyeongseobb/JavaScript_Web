@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>hello html</title>
+    <style>
+    </style>
+  </head>
+  <body>
+    <select id="selectBox">
+    </select><br><br>
+    제목 : <input type="text" id="title"><br><br>
+    내용 : <textarea name="name" rows="8" cols="80"id="content"></textarea><br><br>
+    <input type="button" id="updateBtn" value="수정하기">
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script>
+    $.ajax({
+      url: '/selectValue',
+      data: { },
+      success: function(res) {
+        for(var i=0;i<res.length;i++) {
+          $("#selectBox").append(`<option value="${res[i].no}">${res[i].no}</option><br>`);
+        }
+        $("#selectBox").val(res[0].no).trigger('change');
+        // $.ajax({
+        //   url: '/selectOrigin',
+        //   type: 'post',
+        //   data: {
+        //     no : res[0].no
+        //   },
+        //   success: function(res) {
+        //       $("#title").val(`${res[0].title}`);
+        //       $("#content").val(`${res[0].content}`);
+        //     }
+        //   });
+        alert("complete");
+        }
+      });
+
+    $("#selectBox").change(function(){
+      $.ajax({
+        url: '/selectOrigin',
+        type: 'post',
+        data: {
+          no : $("#selectBox").val()
+        },
+        success: function(res) {
+            $("#title").val(`${res[0].title}`);
+            $("#content").val(`${res[0].content}`);
+          }
+        });
+    });
+
+    $("#updateBtn").click(function(){
+      $.ajax({
+        url: '/update',
+        type: 'post',
+        data: {
+          no : $("#selectBox").val(),
+          title : $("#title").val(),
+          content : $("#content").val()
+        },
+        success: function(response) {
+           alert("complete");
+          }
+        })
+      });
+  </script>
+</html>

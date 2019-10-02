@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>orderPage</title>
+</head>
+<style>
+  body {
+    background-color: #E7E7E7;
+    font-size: 15px;
+  }
+
+  #itemCard {
+    color: #8C8C8C;
+    background-color: #FFFFE4;
+    opacity: 1;
+    float: left;
+    padding: 10px 10px;
+    margin: 10px;
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-style: dotted;
+    border-color: #FFC19E;
+  }
+
+  #itemCard:hover {
+      /* On mouse-over, add a deeper shadow */
+      box-shadow: 0 8px 24px 0 rgba(0,0,0,0.2);
+    }
+
+  #itemName {
+    font-size: 30px;
+    text-align: center;
+    font-style: italic;
+    color: #FFC19E;
+  }
+
+</style>
+<body>
+  <span class="item">
+  </span>
+  <br><br>
+  수량 : <input type="text" id="quantity"></input><br>
+  ID : <input type="text" id="id"></input>
+  <input type="button" id="orderBtn" value="주문하기"></input>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  var no = location.href.split('=')[1];
+  $.ajax({
+    url: '/selectOneItem',
+    type: 'post',
+    data: {
+      no: no
+    },
+    success: function(response) {
+      var htmlString = "";
+      for (var i = 0; i < response.length; i++) {
+        htmlString = htmlString + "<span id='itemCard'>"
+        htmlString = htmlString + "<b id='itemName'>" + response[i].name +"</b><br><br>"
+        htmlString = htmlString + "<span id='itemPrice'>Price : $"+ response[i].price +"</span><br><br>"
+        htmlString = htmlString + "<span id='itemInventory'>Inventory :"+ response[i].inventory +"</span><br><br>"
+        htmlString = htmlString + "</span>"
+      }
+      $('.item').append(`${htmlString}`)
+    }
+  });
+
+  $("#orderBtn").click(function() {
+    $.ajax({
+      url: '/insertOrder',
+      type: 'POST',
+      data: {
+        id: String($("#id").val()),
+        itemNo: Number(no),
+        complete: 0,
+        quantity: Number($("#quantity").val()),
+        inventory: Number($("#itemInventory").text().split(':')[1])
+      },
+      success: function(response) {
+        console.log(response);
+        if(response == "재고부족") {
+          alert("재고가 부족합니다.");
+          $("#quantity").val(Number($("#itemInventory").text().split(':')[1]));
+        }
+        else {
+          window.close();
+          opener.location.reload();
+        }
+      }
+    })
+  });
+</script>
+</html>

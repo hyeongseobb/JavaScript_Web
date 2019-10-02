@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <title></title>
+  <style>
+    body {
+      color: #000000;
+      background: #FFEBFE;
+    }
+
+    .form-control {
+      min-height: 41px;
+      background: #fff;
+      box-shadow: none !important;
+      border-color: #e3e3e3;
+    }
+
+    .form-control:focus {
+      border-color: #70c5c0;
+    }
+
+    .form-control,
+    .btn {
+      border-radius: 2px;
+    }
+
+    .login-form {
+      width: 350px;
+      margin: 0 auto;
+      padding: 100px 0 30px;
+    }
+
+    .login-form form {
+      color: #7a7a7a;
+      border-radius: 2px;
+      margin-bottom: 15px;
+      font-size: 13px;
+      background: #ececec;
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      position: relative;
+    }
+
+    .login-form h2 {
+      font-size: 22px;
+      margin: 35px 0 25px;
+    }
+
+    .login-form .btn {
+      font-size: 16px;
+      font-weight: bold;
+      background: #70c5c0;
+      border: none;
+      margin-bottom: 20px;
+    }
+
+    .login-form .btn:hover,
+    .login-form .btn:focus {
+      background: #50b8b3;
+      outline: none !important;
+    }
+
+    .login-form a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .login-form a:hover {
+      text-decoration: none;
+    }
+
+    .login-form form a {
+      color: #7a7a7a;
+      text-decoration: none;
+    }
+
+    .login-form form a:hover {
+      text-decoration: underline;
+    }
+
+    #chatroom {
+      width: 600px;
+      margin-bottom: 2px;
+      display: flex;
+    }
+
+    #chats {
+      border: 1px solid black;
+      width: 375px;
+      height: 90vh;
+      overflow: scroll;
+      float: left;
+    }
+
+    #users {
+      border: 1px solid black;
+      border-left: none;
+      float: right;
+      width: 200px;
+      height: 90vh;
+    }
+
+    #message {
+      width: 400px;
+    }
+
+    .user {
+      padding: 4px;
+      background-color: #cecece;
+    }
+
+    #userCount {
+      padding: 5px;
+      background-color: black;
+      color: white;
+      border-bottom: 1px solid white;
+    }
+
+    .timeago {
+      color: #cecece;
+      float: right;
+      font-size: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-form">
+    <form class="">
+      <h2 class="text-center">Member Login</h2>
+      <div id="login_section" class="form-group">
+        <input type="text" id="user" class="form-control" name="username" placeholder="Username" required="required">
+      </div>
+      <div id="login_section" class="form-group">
+        <button type="button" id="login" class="btn btn-primary btn-lg btn-block">접속</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="chatroom" style="display:none">
+    <div id="chats">
+    </div>
+
+    <div id="users">
+      <div id="userCount"><span id="count">0</span> Users Online</div>
+      <div id="connectedUserList"></div>
+    </div>
+
+  </div>
+
+  <div id="input_section" style="display:none">
+    <input type="text" name="messages" id="message">
+    <input type="button" id="sendMsg" value="send">
+  </div>
+
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  var socket;
+  var userList = [];
+  $("#user").focus();
+
+  $("#login").click(function() {
+    $.ajax({
+      url: "/check_users",
+      type: 'POST',
+      data: {
+        user: $("#user").val()
+      },
+      success: function(res) {
+        if (res == "로그인성공") {
+          $(".login-form").css("display", "none");
+          $("#chatroom").css("display", "");
+          $("#input_section").css("display", "");
+
+          socket = io();
+
+          socket.on("pastchat", function(rows) {
+            for(var i = 0; i < rows.length; i++) {
+                $('#chats').append(`<p>${rows[i].id}:${rows[i].text}</p>`);
+            }
+          })
+
+          socket.emit('joinRoom', $('#user').val())
+          $('#chats').append(`<p>${$('#user').val()}님이 입장하셨습니다.</p>`);
+
+          socket.on('userlist', function(userlist) {
+            $('#count').html(userlist.length);
+            for (i = 0; i < userlist.length; i++) {
+              if (userlist[i].userName == $('#user').val()) {
+                userList.push(`<b class="user">${userlist[i].userName}(나)</b>`)
+              } else {
+                userList.push(`<div class="user">${userlist[i].userName}</div>`)
+              }
+            }
+            $('#connectedUserList').html(userList);
+            userList = [];
+          });
+          socket.on('enter', function(params) {
+            $('#chats').append(`<p>${params.userName}님이 입장하셨습니다.</p>`);
+          });
+
+          socket.on('exit', function(params) {
+            $('#chats').append(`<p>${params.userName}님이 퇴장하셨습니다.</p>`);
+          });
+
+          $('#sendMsg').click(function() {
+            $('#chats').append(`<p>나:${$('#message').val()}</p>`);
+            socket.emit('message', {
+              socketId: socket.id,
+              msg: $('#message').val()
+            });
+            $('#message').val('');
+            return false;
+
+          });
+          socket.on("newChatMsg", function(params) {
+            $('#chats').append(`<p>${params.userName}:${params.msg}</p>`);
+          })
+
+        } else {
+          alert("아이디 중복");
+          $("#user").val("");
+          $("#user").focus();
+        }
+      }
+    });
+  });
+
+  $("#user").keydown(function(key) {
+    if (key.keyCode == 13) {
+      $("#login").click();
+    }
+  });
+
+  $("#message").keydown(function(key) {
+    if (key.keyCode == 13) {
+      $("#sendMsg").click();
+    }
+  });
+</script>
+
+</html>

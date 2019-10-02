@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <div class="mealbox"></div>
+  <div class="btn_section">
+    <hr>
+    <button type="button" id="graph">그래프 그리기</button>
+    <button type="button" id="excel">엑셀 다운로드</button>
+  </div>
+  <div id="graph_section"></div>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  var result = [];
+
+  $.ajax({
+    url: `/getMenu`,
+    success: function(response) {
+      var menu_score = [];
+
+      for (i = 0; i < response.length; i++) {
+        response[i].menu_list = response[i].menu_list.split(',')
+      }
+
+      var htmlString = "";
+      var selectBox = "";
+
+      for (i = 0; i <= 10; i++) {
+        selectBox += `<option value="${i}">${i}</option>`
+      }
+
+      for (i = 0; i < response.length; i++) {
+        htmlString += `<hr><div id="${response[i].day}">${response[i].day}</div><hr>`
+        for (j = 0; j < response[i].menu_list.length; j++) {
+          htmlString += `<p>${response[i].menu_list[j]} <select name="day_${[i]}">${selectBox}</select></p>`
+        }
+      }
+      console.log(response)
+      $('.mealbox').html(htmlString);
+
+      $("#graph").click(function() {
+
+        var total_score = 0;
+        result = []
+        for (i = 0; i < response.length; i++) {
+          for (j = 0; j < response[i].menu_list.length; j++) {
+            menu_score.push(Number($(`[name="day_${i}"]`)[j].value))
+            total_score += Number($(`[name="day_${i}"]`)[j].value)
+            response[i].score = menu_score
+            response[i].avg_score = total_score / response[i].menu_list.length
+          }
+          result.push([response[i].day, response[i].avg_score]);
+          menu_score = []
+          total_score = 0;
+        }
+
+        // console.log(result);
+        // console.log(response);
+
+        google.charts.load('current', {
+          packages: ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawBasic);
+      });
+
+      $("#excel").click(function() {
+        $.ajax({
+          url: "/create_xlsx",
+          type: 'POST',
+          data: {
+            param: JSON.stringify(response)
+          },
+          success: function(response) {
+            console.log(response);
+            alert("!!");
+            location.href = '/getExcelFile'
+          }
+        });
+      });
+
+    }
+  });
+
+  function drawBasic() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'X');
+    data.addColumn('number', '만족도');
+    data.addRows(result);
+    var options = {
+      hAxis: {
+        title: '요일'
+      },
+      vAxis: {
+        title: '만족도'
+      }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('graph_section'));
+    chart.draw(data, options);
+  };
+
+  var obj = {
+
+  }
+</script>
+
+</html>

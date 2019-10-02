@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Item List</title>
+</head>
+<style>
+  body {
+    background-color: #E7E7E7;
+    font-size: 15px;
+    text-align: center;
+  }
+
+  hr {
+    border: 1px solid #FFC19E;
+  }
+
+  #itemCard {
+    color: #8C8C8C;
+    background-color: #FFFFE4;
+    opacity: 1;
+    float: left;
+    padding: 10px 10px;
+    margin: 10px;
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-style: dotted;
+    border-color: #FFC19E;
+    width: 125px;
+    height: 200px;
+  }
+
+  #itemCard:hover {
+      /* On mouse-over, add a deeper shadow */
+      box-shadow: 0 8px 24px 0 rgba(0,0,0,0.2);
+      background-color: #FFBB00;
+      color: white;
+    }
+
+  #itemName {
+    font-size: 27px;
+    font-style: italic;
+    color: #FFC19E;
+  }
+
+  #itemName:hover {
+    color: white;
+  }
+
+  #buyBtn {
+    color: #FFC19E;
+    margin: 25px;
+    background-color: #FFFFE4;
+    border: 2px solid #FFC19E;
+    text-decoration: none;
+  }
+
+  #buyBtn:hover {
+    transform: scale( 1.15 );
+  }
+
+  #stock {
+    margin: 4px;
+    color: #FF5E00;
+    font-size: 30px;
+    font-style: oblique;
+  }
+
+</style>
+<body>
+  <span class="item">
+  </span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  $.ajax({
+    url: '/selectItem',
+    type: 'post',
+    data: {},
+    success: function(response) {
+      var htmlString = "";
+      for (var i = 0; i < response.length; i++) {
+        htmlString = htmlString + "<span id='itemCard'>"
+        htmlString = htmlString + "<b id='itemName'>" + response[i].name +"</b><br>"
+        htmlString = htmlString + "<hr><br>"
+        htmlString = htmlString + "<span id='itemPrice'>Price : $"+ response[i].price +"</span><br><br>"
+        htmlString = htmlString + "<span id='itemInventory'>Inventory : "+ response[i].inventory +"</span><br><br>"
+        if (response[i].inventory == 0) {
+          htmlString = htmlString +"<span id='stock'>sold out</span><br>";
+        } else {
+          htmlString = htmlString + "<input type='button' id='buyBtn' value='구매하기' onclick=" + '"window.open('+ "'/order?no=" + response[i].no + "'" +  ",'orderPage','width=500px, height=500px'" + ')"' + '></input>';
+        }
+        htmlString = htmlString + "</span>"
+      }
+      $('.item').append(`${htmlString}`)
+
+    }
+  });
+
+</script>
+</html>

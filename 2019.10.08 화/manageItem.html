@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>아이템 관리</title>
+</head>
+<style>
+
+</style>
+
+<body>
+  <span class="item">
+  </span><br><br>
+  <b>신제품 입력</b><br>
+  제품명: <input type='text' id='name'></input> /
+  가격: <input type='text' id='price'></input> /
+  재고: <input type='text' id='inventory'></input>
+  판매여부: <select id='onsale'>
+    <option value="0">비매
+    <option>
+    <option value="1" selected>판매중
+    <option>
+  </select> /
+  <input type="button" id="newProductBtn" value="생성">
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  function makeTag(response) {
+    var htmlString = "";
+    for (let i = 0; i < response.length; i++) {
+      htmlString = htmlString + `제품명: <input type='text' id='name${response[i].no}' value='${response[i].name}'></input> / `;
+      htmlString = htmlString + `가격: <input type='text' id='price${response[i].no}' value='${response[i].price}'></input> / `;
+      htmlString = htmlString + `재고: <input type='button' id='minus${response[i].no}' value='-' onclick="minus_click(${response[i].no});"></input>`;
+      htmlString = htmlString + ` <input type='text' id='inventory${response[i].no}' value='${response[i].inventory}'></input>`;
+      htmlString = htmlString + ` <input type='button' id='plus${response[i].no}' value='+' onclick="plus_click(${response[i].no});"></input> / `;
+      htmlString = htmlString + `판매여부: <select id='onsale${response[i].no}' value='${response[i].onsale}'> / `;
+      if (response[i].onsale == 0) {
+        htmlString = htmlString + `<option value="1">판매중</option>`;
+        htmlString = htmlString + `<option value="0" selected>비매</option>`;
+      } else {
+        htmlString = htmlString + `<option value="1"selected>판매중</option>`;
+        htmlString = htmlString + `<option value="0">비매</option>`;
+      }
+      htmlString = htmlString + `</select>`;
+      htmlString = htmlString + `<input type='button' id='updateBtn${response[i].no}' value='업데이트' onclick="updateItem(${response[i].no});"></input><br>`;
+    }
+    $('.item').append(`${htmlString}`)
+  }
+  $.ajax({
+    url: '/selectItem',
+    type: 'post',
+    data: {},
+    success: function(response) {
+      makeTag(response);
+    }
+  });
+
+  function minus_click(no) {
+    var origin = Number($(`#inventory${no}`).val());
+    if (origin > 0) {
+      $(`#inventory${no}`).val(origin - 1);
+    }
+    alert("재고가 0보다 적을순 없지^^;")
+  }
+
+  function plus_click(no) {
+    var origin = Number($(`#inventory${no}`).val());
+    $(`#inventory${no}`).val(origin + 1);
+  }
+
+  function updateItem(no) {
+    $.ajax({
+      url: '/updateItem',
+      type: 'post',
+      data: {
+        no: no,
+        name: $(`#name${no}`).val(),
+        price: $(`#price${no}`).val(),
+        inventory: $(`#inventory${no}`).val(),
+        onsale: $(`#onsale${no}`).val()
+      },
+      success: function(response) {
+        alert("good");
+      }
+    });
+  }
+  $("#newProductBtn").click(function() {
+    $.ajax({
+      url: '/newProduct',
+      type: 'post',
+      data: {
+        name: $(`#name`).val(),
+        price: $(`#price`).val(),
+        inventory: $(`#inventory`).val(),
+        onsale: $(`#onsale`).val()
+      },
+      success: function(response) {
+        makeTag(response);
+      }
+    });
+  });
+</script>
+
+</html>
